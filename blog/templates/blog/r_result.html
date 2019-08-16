@@ -41,27 +41,7 @@
 <body>
 	<div class="super_container">
 		<!-- Header -->
-		<header class="header">
-			<div class="container">
-				<div class="row">
-					<div class="col">
-						<div class="header_content d-flex flex-row align-items-center justify-content-start">
-							<div class="logo"><a href="{% url 'HomePage' %}">Go Travellers</a></div>
-							<nav class="main_nav" style="margin-left: 280px;">
-								<ul>
-									<li class="active"><a href="{% url 'HomePage' %}" style="font-size: 16px;">Home</a></li>
-									<li class="active"><a href="{% url 'Recommendation' %}" style="font-size: 16px;">Recommendation</a></li>
-									<li class="active"><a href="{% url 'search' %}" style="font-size: 16px;">Recommended For you</a></li>
-								</ul>
-							</nav>
-							<div class="hamburger ml-auto menu_mm">
-								<i class="fa fa-bars trans_200 menu_mm" aria-hidden="true"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
+		{% include 'blog/header.html' %}
 		<!-- Menu -->
 		<div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
 			<div class="menu_close_container"><div class="menu_close"><div></div><div></div></div></div>
@@ -102,12 +82,7 @@
 											{% comment %} <div class="ribbon">
 											<span>{{cosine}}%</span>
 										</div> {% endcomment %}
-										<img class="card-img-top" src="/media/img/{{ place.image }}" alt="">
-										<form method="POST" action="{% url 'post' place.id %}">
-										{% csrf_token %}
-										{{u_form.as_p}}
-										<button class="btn btn-primary">Detail</button>
-										</form>
+										<a href="{% url 'post' place.id %}"><img class="card-img-top" src="/media/img/{{ place.image }}" alt=""></a>
 										<div class="card-body">
 											<i><u><p style="color:#615F5F;">{{place.trekking_type}}</p></u></i>
 											<div class="card-title card-title-small"><a href="{% url 'post' place.id %}">{{place.title}}</a></div>

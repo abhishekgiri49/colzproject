@@ -50,7 +50,3 @@ class Destination(models.Model):
 
 
 
-class UserVisited(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
-

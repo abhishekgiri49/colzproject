@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.http import *
-from .models import Destination, UserVisited
+from .models import Destination
 from django.db.models import Q
 from .forms import DurationForm
 from math import sin, cos, sqrt, atan2, radians
 from scipy import spatial
 from django.contrib.auth.decorators import login_required
-from .forms import UserVisitedForm
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
+from account.models import UserHistory
 
 #filter places radio TextInput
 def FilterPlacesRadioInput(send):
@@ -41,14 +41,7 @@ def HomePage(request):
 
 def PostDetails(request, id):
     place = Destination.objects.get(id=id)
-    if request.method == "POST":
-        u_form = UserVisitedForm(request.POST)
-        if u_form.is_valid():
-            data = UserVisited.objects.create(user = request.user, destination= place)
-            return redirect('/post/{}'.format(place.id))
-    else:
-        u_form = UserVisitedForm()
-    return render(request, 'blog/post.html', {"thispost": place, "u_form":u_form})
+    return render(request, 'blog/post.html', {"thispost": place})
 
 
 
@@ -61,7 +54,6 @@ def r_result(request):
     if request.method == 'POST':
         # print('aayo')
         form = DurationForm(request.POST)
-        u_form = UserVisitedForm(request.POST)
         print(form.errors)
         print(form.non_field_errors)
         if form.is_valid():
@@ -76,6 +68,11 @@ def r_result(request):
             duration = form.cleaned_data['duration']
             latitude = form.cleaned_data['latitude']
             longitude = form.cleaned_data['longitude']
+            if request.user.is_authenticated:
+                UserHistory.objects.create(duration = duration, trekking_type = trekking, 
+                    destination_type = destination, accomodation_type = accomodation, 
+                    temperature = temperature, difficulty = difficulty, security = security,
+                    latitude = latitude, longitude = longitude, user = request.user)
             #print(latitude)
             #print(longitude)
             data = []
@@ -121,7 +118,7 @@ def r_result(request):
 
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
                     finaldestination = Destination.objects.filter(title__in = common)
-                gogo = {'places': finaldestination, 'cosine': cosine_data, 'u_form':u_form}
+                gogo = {'places': finaldestination, 'cosine': cosine_data}
                 return render(request, 'blog/r_result.html', gogo)
         else:
             form = DurationForm()

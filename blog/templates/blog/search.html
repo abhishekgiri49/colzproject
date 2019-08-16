@@ -57,12 +57,7 @@
 								{% comment %} <div class="ribbon">
 								<span>{{cosine}}%</span>
 							</div> {% endcomment %}
-							<img class="card-img-top" src="/media/img/{{ place.image }}" alt="">
-							<form method="POST" action="{% url 'post' place.id %}">
-								{% csrf_token %}
-								{{u_form.as_p}}
-								<button class="btn btn-primary">Detail</button>
-							</form>
+							<a href="{% url 'post' place.id %}"><img class="card-img-top" src="/media/img/{{ place.image }}" alt=""></a>
 							<div class="card-body">
 								<i><u><p style="color:#615F5F;">{{place.trekking_type}}</p></u></i>
 								<div class="card-title card-title-small"><a href="{% url 'post' place.id %}">{{place.title}}</a></div>

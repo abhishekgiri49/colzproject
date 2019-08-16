@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import NumberInput
-from .models import UserVisited
+
 
 # average trekkers walk 8 hour a day
 # average walking speed 3.6 / hour 
@@ -83,7 +83,3 @@ class DurationForm(forms.Form):
 
 
 
-class UserVisitedForm(forms.ModelForm):
-    class Meta:
-        model = UserVisited
-        exclude = ['user', 'destination']

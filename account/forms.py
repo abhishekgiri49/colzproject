@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
+
 class UserRegistrationForm(UserCreationForm):
 	class Meta:
 		model = User
@@ -29,6 +30,4 @@ class UserRegistrationForm(UserCreationForm):
 			raise forms.ValidationError("Email already exists")
 		else:
 			return email
-
-
 
