@@ -20,10 +20,10 @@ def RegisterUser(request):
 			form.save()
 			username = form.cleaned_data['username']
 			messages.success(request, f'Account creation Successful')
-			return redirect('loginuser')
+			return redirect('loginuser',{'title':"GO Travellers | Login"})
 	else:
 		form = UserRegistrationForm()
-	return render(request, "signupuser.html", {"form":form})
+	return render(request, "signupuser.html", {"form":form,'title':"GO Travellers | Registration"})
 
 #used auth_views to login
 

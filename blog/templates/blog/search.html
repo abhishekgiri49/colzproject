@@ -3,7 +3,7 @@
 {% load static %}
 <html lang="en">
 <head>
-	<title>Go Travellers</title>
+	<title>{{ title }}</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Demo project">
@@ -15,6 +15,26 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/post.css' %}">
+	<style>
+		.ribbon span {
+			font-size: 15px;
+			font-weight: bold;
+			color: #FF0000;
+			text-transform: uppercase;
+			text-align: center;
+			line-height: 20px;
+			transform: rotate(0deg);
+			-webkit-transform: rotate(0deg);
+			width: 45px;
+			display: block;
+			background: red;
+			background: #04e2f2;
+			box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+			position: absolute;
+			border: 1px solid black;
+
+		}
+	</style>
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/post_responsive.css' %}">
 </head>
 <body>
@@ -50,7 +70,7 @@
 						<!-- Category -->
 						<div class="category">
 							<div class="section_panel d-flex flex-row align-items-center justify-content-start">
-								<div class="section_title">Don't Miss</div>
+								<!-- <div class="section_title">Don't Miss</div> -->
 							</div>
 							<div class="section_content">
 								<div class="grid clearfix">
@@ -58,9 +78,9 @@
                  {% for place in places|slice:"0:4" %}
 									<!-- Small Card With Image -->
 									<div class="card card_small_with_image grid-item" style="border: 1px solid #9D9C9C; border-radius: 0px;">
-									 {% comment %} <div class="ribbon">
+									  <div class="ribbon">
                                 		<span>{{cosine}}%</span>
-                            		</div> {% endcomment %}
+                            		</div> 
 										<img class="card-img-top" src="/media/img/{{ place.image }}" alt="">
 										<div class="card-body">
 										<i><u><p style="color:#615F5F;">{{place.trekking_type}}</p></u></i>

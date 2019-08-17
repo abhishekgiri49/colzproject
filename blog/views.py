@@ -36,12 +36,12 @@ def ApplyCosineSimi(cosine_para, places):
     return result1
 
 def HomePage(request):
-    return render(request, 'blog/index.html')
+    return render(request, 'blog/index.html',{'title':"GO Travellers | Home"})
 
 
 def PostDetails(request, id):
     place = Destination.objects.get(id=id)
-    return render(request, 'blog/post.html', {"thispost": place})
+    return render(request, 'blog/post.html', {"thispost": place,'title':"GO Travellers | Destination Detail"})
 
 
 
@@ -57,7 +57,7 @@ def r_result(request):
         print(form.errors)
         print(form.non_field_errors)
         if form.is_valid():
-            print('ok to go')
+            # print('ok to go')
             temperature = form.cleaned_data['temperature']
             difficulty = form.cleaned_data['difficulty']
             security = form.cleaned_data['security']
@@ -82,10 +82,10 @@ def r_result(request):
                     name = place.title
                     lat1 = radians(place.latitude)
                     lon1 = radians(place.longitude)
-                    print(latitude)
+                    # print(latitude)
                     lat2 = radians(latitude)
                     lon2 = radians(longitude)
-                    print(lat1)
+                    # print(lat1)
 
                     dlon = lon2 - lon1
                     dlat = lat2 - lat1
@@ -103,30 +103,28 @@ def r_result(request):
             finally:
                 send = {'trekking':trekking, 'destination': destination, 'accomodation': accomodation}
                 data_for_cosine = [temperature, difficulty, security]
-                print(data_for_cosine)
+                # print(data_for_cosine)
                 filteredplaces = FilterPlacesRadioInput(send)
-                print(data)
+                # print(data)
 
                 if len(data) == 0:
                     cosine_data = ApplyCosineSimi(data_for_cosine, filteredplaces)
                     finaldestination = Destination.objects.filter(title__in = filteredplaces)
-                    print(cosine_data)
+                    # print(cosine_data)
 
                 else:
                     common = set(data).intersection(set(filteredplaces))
-                    print(common)
+                    # print(common)
 
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
                     finaldestination = Destination.objects.filter(title__in = common)
-                gogo = {'places': finaldestination, 'cosine': cosine_data}
+                gogo = {'places': finaldestination, 'cosine': cosine_data ,'title':"GO Travellers | Recommendation"}
                 return render(request, 'blog/r_result.html', gogo)
         else:
             form = DurationForm()
             UserVisitedForm()
             return HttpResponseRedirect('/recommendation/')
 
-"""def post(request):
-    return render(request, 'blog/post.html')"""
 
 
 def Search(request):
@@ -134,7 +132,7 @@ def Search(request):
     print(userid)
     if not userid:
         finaldestination = []
-        gogo = {'places': finaldestination}
+        gogo = {'places': finaldestination ,'title':"GO Travellers | Recommended"}
         return render(request, 'blog/search.html', gogo)
     else:
         obj = UserHistory.objects.filter(user_id=userid).latest('id')
@@ -190,5 +188,5 @@ def Search(request):
 
                 cosine_data = ApplyCosineSimi(data_for_cosine, common)
                 finaldestination = Destination.objects.filter(title__in = common)
-            gogo = {'places': finaldestination, 'cosine': cosine_data}
+            gogo = {'places': finaldestination, 'cosine': cosine_data,'title':"GO Travellers | Recommended"}
             return render(request, 'blog/search.html', gogo)

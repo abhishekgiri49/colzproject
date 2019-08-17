@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>{{ title }}</title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 	{%load static%}
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
@@ -20,22 +21,39 @@
 				<div class="col">
 					<div class="header_content d-flex flex-row align-items-center justify-content-start">
 						<div class="logo"><a href="{% url 'HomePage' %}">Go Travellers</a></div>
-						<nav class="main_nav" style="margin-left: 280px;">
-							<ul>
-								<li class="active"><a href="{% url 'HomePage' %}" style="font-size: 16px;">Home</a></li>
-								<li class="active"><a href="{% url 'Recommendation' %}" style="font-size: 16px;">Recommendation</a></li>
-								<li class="active"><a href="{% url 'search' %}" style="font-size: 16px;">Recommended For you</a></li>
-								{% if user.is_authenticated %}
-								<li class="active"><a href="{% url 'logoutuser' %}" style="font-size: 16px;"> Logout</a></li>
-								<li class="active" style="font-size: 15px;">welcome {{request.user.username}}</li>
-								{% else %}
-								<li class="active"><a href="{% url 'loginuser' %}" style="font-size: 16px;">Login</a></li>
-								{% endif %}
-							</ul>
+						<nav class="navbar navbar-expand-md navbar-dark bg-transparent main_nav">
+						  <!-- <a class=" navbar-brand" href="{% url 'HomePage' %}">Go Travellers</a> -->
+						  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						    <span class="navbar-toggler-icon"></span>
+						  </button>
+
+						  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+						    <ul class="navbar-nav navbar-right">
+						      <li class="nav-item active">
+						        <a class="nav-link" href="{% url 'HomePage' %}"  style="font-size: 16px;">Home <span class="sr-only"></span></a>
+						      </li>
+						      <li class="nav-item active">
+						        <a class="nav-link" href="{% url 'Recommendation' %}"  style="font-size: 16px;">Recommendation <span class="sr-only"></span></a>
+						      </li>
+						      {% if user.is_authenticated %}
+						      <li class="nav-item active">
+						        <a class="nav-link" href="{% url 'search' %}"  style="font-size: 16px;">Recommended For you<span class="sr-only"></span></a>
+						      </li>
+						      <li class="nav-item active">
+						      	(<p class="usercss"   style="font-size: 16px; color: white;display: inline-block;">{{request.user.first_name}} {{request.user.last_name}}</p>)
+						        <a class="nav-link" href="{% url 'logoutuser' %}"  style="font-size: 16px;">Logout <span class="sr-only"></span></a>
+						      </li>
+						      {% else %}
+						      <li class="nav-item active">
+						        <a class="nav-link" href="{% url 'loginuser' %}"  style="font-size: 16px;">Login <span class="sr-only"></span></a>
+						      </li>
+						      <li class="nav-item active">
+						        <a class="nav-link" href="{% url 'registeruser' %}"  style="font-size: 16px;">Register <span class="sr-only"></span></a>
+						      </li>
+						      {% endif %}
+						    </ul>
+						  </div>
 						</nav>
-						<div class="hamburger ml-auto menu_mm">
-							<i class="fa fa-bars trans_200 menu_mm" aria-hidden="true"></i>
-						</div>
 					</div>
 				</div>
 			</div>
