@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from account.models import UserHistory
+from random import *
 
 #filter places radio TextInput
 def FilterPlacesRadioInput(send):
@@ -135,7 +136,8 @@ def Search(request):
         gogo = {'places': finaldestination ,'title':"GO Travellers | Recommended"}
         return render(request, 'blog/search.html', gogo)
     else:
-        obj = UserHistory.objects.filter(user_id=userid).latest('id')
+        # obj = UserHistory.objects.filter(user_id=userid).latest('id')
+        obj = random.choice(list(UserHistory.objects.filter(user_id=userid)))
         # if obj:
 
         temperature = obj.temperature
