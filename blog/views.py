@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from account.models import UserHistory
-from random import *
+import random
 
 #filter places radio TextInput
 def FilterPlacesRadioInput(send):
@@ -52,7 +52,9 @@ def Recommendation(request):
 
 
 def r_result(request):
-    if request.method == 'POST':
+    if request.method!="POST":  #add this
+        return redirect('Recommendation') #add this
+    elif request.method == 'POST': #edit if to elif 
         # print('aayo')
         form = DurationForm(request.POST)
         print(form.errors)
@@ -110,7 +112,10 @@ def r_result(request):
 
                 if len(data) == 0:
                     cosine_data = ApplyCosineSimi(data_for_cosine, filteredplaces)
-                    finaldestination = Destination.objects.filter(title__in = filteredplaces)
+                    try:
+                        finaldestination = Destination.objects.filter(title__in = filteredplaces)
+                    except:
+                        raise Http404
                     # print(cosine_data)
 
                 else:
@@ -118,14 +123,16 @@ def r_result(request):
                     # print(common)
 
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
-                    finaldestination = Destination.objects.filter(title__in = common)
+                    try:
+                        finaldestination = Destination.objects.filter(title__in = common)
+                    except:
+                        raise Http404
                 gogo = {'places': finaldestination, 'cosine': cosine_data ,'title':"GO Travellers | Recommendation"}
                 return render(request, 'blog/r_result.html', gogo)
         else:
             form = DurationForm()
             UserVisitedForm()
             return HttpResponseRedirect('/recommendation/')
-
 
 
 def Search(request):
