@@ -118,13 +118,9 @@ def r_result(request):
 
                 if len(data) == 0:
                     cosine_data = ApplyCosineSimi(data_for_cosine, filteredplaces)
-<<<<<<< HEAD
                     finaldestination = Destination.objects.filter(title__in = cosine_data[1])
                     print(cosine_data[1])
 
-=======
-                    finaldestination = Destination.objects.filter(title__in = filteredplaces)
->>>>>>> 29cde83da688fb0630ea2f7d49acabf95730a292
                 else:
                     common = set(data).intersection(set(filteredplaces))
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
