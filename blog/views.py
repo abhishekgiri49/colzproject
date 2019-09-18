@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from account.models import UserHistory
-from random import *
+import random
 
 #filter places radio TextInput
 def FilterPlacesRadioInput(send):
@@ -56,8 +56,11 @@ def Recommendation(request):
     return render(request, 'blog/recommendation.html', {'form': form})
 
 
+
 def r_result(request):
-    if request.method == 'POST':
+    if request.method!="POST":  #add this
+        return redirect('Recommendation') #add this
+    elif request.method == 'POST': #edit if to elif 
         # print('aayo')
         form = DurationForm(request.POST)
         print(form.errors)
@@ -75,7 +78,7 @@ def r_result(request):
             latitude = form.cleaned_data['latitude']
             longitude = form.cleaned_data['longitude']
             if request.user.is_authenticated:
-                UserHistory.objects.create(duration = duration, trekking_type = trekking, 
+                UserHistory.objects.get_or_create(duration = duration, trekking_type = trekking, 
                     destination_type = destination, accomodation_type = accomodation, 
                     temperature = temperature, difficulty = difficulty, security = security,
                     latitude = latitude, longitude = longitude, user = request.user)
@@ -115,9 +118,13 @@ def r_result(request):
 
                 if len(data) == 0:
                     cosine_data = ApplyCosineSimi(data_for_cosine, filteredplaces)
+<<<<<<< HEAD
                     finaldestination = Destination.objects.filter(title__in = cosine_data[1])
                     print(cosine_data[1])
 
+=======
+                    finaldestination = Destination.objects.filter(title__in = filteredplaces)
+>>>>>>> 29cde83da688fb0630ea2f7d49acabf95730a292
                 else:
                     common = set(data).intersection(set(filteredplaces))
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
@@ -133,7 +140,7 @@ def r_result(request):
             return HttpResponseRedirect('/recommendation/')
 
 
-
+@login_required
 def Search(request):
     userid = request.user.id
     print(userid)
