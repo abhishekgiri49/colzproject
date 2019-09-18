@@ -51,6 +51,7 @@ def Recommendation(request):
     return render(request, 'blog/recommendation.html', {'form': form})
 
 
+
 def r_result(request):
     if request.method!="POST":  #add this
         return redirect('Recommendation') #add this
@@ -72,7 +73,7 @@ def r_result(request):
             latitude = form.cleaned_data['latitude']
             longitude = form.cleaned_data['longitude']
             if request.user.is_authenticated:
-                UserHistory.objects.create(duration = duration, trekking_type = trekking, 
+                UserHistory.objects.get_or_create(duration = duration, trekking_type = trekking, 
                     destination_type = destination, accomodation_type = accomodation, 
                     temperature = temperature, difficulty = difficulty, security = security,
                     latitude = latitude, longitude = longitude, user = request.user)
@@ -112,21 +113,11 @@ def r_result(request):
 
                 if len(data) == 0:
                     cosine_data = ApplyCosineSimi(data_for_cosine, filteredplaces)
-                    try:
-                        finaldestination = Destination.objects.filter(title__in = filteredplaces)
-                    except:
-                        raise Http404
-                    # print(cosine_data)
-
+                    finaldestination = Destination.objects.filter(title__in = filteredplaces)
                 else:
                     common = set(data).intersection(set(filteredplaces))
-                    # print(common)
-
                     cosine_data = ApplyCosineSimi(data_for_cosine, common)
-                    try:
-                        finaldestination = Destination.objects.filter(title__in = common)
-                    except:
-                        raise Http404
+                    finaldestination = Destination.objects.filter(title__in = common)
                 gogo = {'places': finaldestination, 'cosine': cosine_data ,'title':"GO Travellers | Recommendation"}
                 return render(request, 'blog/r_result.html', gogo)
         else:
@@ -135,6 +126,7 @@ def r_result(request):
             return HttpResponseRedirect('/recommendation/')
 
 
+@login_required
 def Search(request):
     userid = request.user.id
     print(userid)
