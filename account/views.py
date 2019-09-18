@@ -20,7 +20,7 @@ def RegisterUser(request):
 			form.save()
 			username = form.cleaned_data['username']
 			messages.success(request, f'Account creation Successful')
-			return redirect('loginuser',{'title':"GO Travellers | Login"})
+			return redirect('loginuser')
 	else:
 		form = UserRegistrationForm()
 	return render(request, "signupuser.html", {"form":form,'title':"GO Travellers | Registration"})
